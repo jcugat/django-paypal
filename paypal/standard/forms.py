@@ -46,6 +46,11 @@ class PayPalPaymentsForm(forms.Form):
         (1, "reattempt billing on Failure"), 
         (0, "Do Not reattempt on failure")
     )
+    RM_CHOICES = (
+        (0, "all shopping cart transactions use the GET method"), 
+        (1, "the payer’s browser is redirected to the return URL by the GET method, and no transaction variables are sent"), 
+        (2, "the payer’s browser is redirected to the return URL by the POST method, and all transaction variables are also posted")
+    )
 
     BUY = 'buy'
     SUBSCRIBE = 'subscribe'
@@ -85,6 +90,7 @@ class PayPalPaymentsForm(forms.Form):
     notify_url = forms.CharField(widget=ValueHiddenInput())
     cancel_return = forms.CharField(widget=ValueHiddenInput())
     return_url = forms.CharField(widget=ReservedValueHiddenInput(attrs={"name":"return"}))
+    rm = forms.ChoiceField(widget=forms.HiddenInput(), initial=RM_CHOICES[0][0])
     custom = forms.CharField(widget=ValueHiddenInput())
     invoice = forms.CharField(widget=ValueHiddenInput())
     
